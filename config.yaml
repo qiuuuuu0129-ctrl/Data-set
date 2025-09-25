@@ -1,0 +1,48 @@
+# capture config for PlantAI dataset collection
+# edit values below to tune behavior (no need to edit python code)
+
+# 摄像头与保存设置
+camera_index: 0        # 摄像头编号 (0,1,...). 可用 test_camera.py 先确认
+data_dir: "data"       # 数据保存根目录
+logs_dir: "logs"       # 日志/元数据目录
+per_label_dir_date: true   # 是否为每个采集会话建立日期子目录 (true/false)
+
+# 采集行为
+num_images: 50         # 每个类别目标有效图片数（不含被跳过的）
+interval_sec: 0.5      # 每张图片间隔（秒），可设 0 表示尽快采集
+max_frames: 1000       # 每个类别对摄像头采集的最大帧数（防止死循环）
+
+# 图像质量检测阈值（可按需调高/调低）
+blur_threshold: 100.0      # Laplacian 方差小于此值认为模糊（越大越严格）
+brightness_low: 40         # 低于此值认为过暗
+brightness_high: 220       # 高于此值认为过亮
+
+# 去重/相似检测
+enable_phash_check: true
+phash_hamming_threshold: 6 # phash 汉明距离阈值，小于等于则认定为重复（0-64）
+
+# 遮挡/人脸检测
+detect_face: true         # 是否检测人脸并跳过
+face_min_size: [50, 50]   # 人脸检测最小尺寸 (w,h)
+
+# 可选: 更强的检测（仅当你有模型） - 留空表示不启用
+# object_detector: { model_path: "models/hand_detector.tflite", type: "tflite" }
+# 支持用外部模型检测手覆盖/其它遮挡，复杂，默认不启用
+object_detector: null
+
+# 元数据/日志/持久化
+metadata_csv: "logs/metadata.csv"  # 每张图片的元数据 CSV（会 append）
+log_json_dir: "logs/json"          # 每次会话保存的详细日志 JSON
+
+# 上传配置（可选）
+upload:
+  enable: false
+  url: "http://192.168.1.100:5000/upload"  # 如果启用，请改成你的服务器地址
+  timeout_sec: 8
+  retries: 2
+  background_threads: 2
+
+# 其它
+show_preview_window: true   # 是否弹出 OpenCV 窗口显示实时画面（采集过程中）
+keyboard_quit_key: "q"      # 退出当前类别采集
+keyboard_skip_key: "n"      # 跳过当前类别，进入下一个

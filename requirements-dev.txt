@@ -1,0 +1,23 @@
+# 图像处理
+opencv-python==4.9.0.80
+Pillow==11.0.0
+imagehash==4.3.2
+
+# 数据处理
+numpy==1.26.4
+pandas==2.2.3
+
+# 深度学习 (训练用)
+torch==2.2.2
+torchvision==0.17.2
+
+# Web 服务 (本地调试 Flask API)
+Flask==3.0.3
+
+# 配置/上传工具
+PyYAML==6.0.2
+requests==2.32.3
+
+# 其他工具
+tqdm==4.66.5
+matplotlib==3.9.2
