@@ -27,6 +27,7 @@ from datetime import datetime
 from tqdm import tqdm
 from collections import deque
 
+# 这里是一些工具函数
 # ------------------- utils -------------------
 def load_config(path="config.yaml"):
     with open(path, "r", encoding="utf-8") as f:
