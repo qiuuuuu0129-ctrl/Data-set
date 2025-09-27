@@ -309,6 +309,6 @@ def main():
         capture_label_session(cfg, label, uploader=uploader)
 
     print("全部采集任务完成。")
-
+ #dies
 if __name__ == "__main__":
     main()
