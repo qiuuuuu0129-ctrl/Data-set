@@ -308,7 +308,7 @@ def main():
         print(f"\n>>> 开始类别: {label}")
         capture_label_session(cfg, label, uploader=uploader)
 
-    print("全部采集任务完成。")
+    print("全部采集任务完成。")  #test工具函数
 
 if __name__ == "__main__":
     main()
