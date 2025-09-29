@@ -1,0 +1,60 @@
+# dataset_config.yaml
+#怎么拆分数据
+# 用于控制数据整理、划分与增强等参数（被 dataset_builder.py / auto_pipeline.py 使用）
+# 你可以用 auto_pipeline.py --config path/to/this.yaml 来覆盖默认设置
+
+data:
+  raw_local_path: "data/raw/local_dataset"     # 本地图片目录（每种植物一个子目录）
+  raw_external_path: "data/raw/external_dataset"
+  processed_path: "data/processed"
+  logs_path: "data/logs"
+  metadata_csv: "data/logs/metadata.csv"
+
+scan:
+  allowed_extensions: [".jpg", ".jpeg", ".png", ".webp"]
+  recursive: true
+  min_image_size: 32        # 忽略短边小于此像素的图片
+  max_image_size: 8000      # 忽略异常超大图片（保护内存）
+
+dedup:
+  method: "md5_then_phash"  # 可选: none | md5 | phash | md5_then_phash
+  phash_distance_threshold: 5
+  action_on_duplicate: "ignore"  # ignore | move
+  duplicates_dir: "data/logs/duplicates"
+
+split:
+  strategy: "stratified"    # stratified | random
+  val_ratio: 0.15
+  test_ratio: 0.10
+  stratify_by: "plant"      # 可以是 "plant" 或 "plant+disease"（需要 metadata 有字段 disease）
+
+preprocess:
+  resize:
+    enabled: true
+    short_side: 256
+    maintain_aspect: true
+  normalize:
+    enabled: true
+    mean: [0.485, 0.456, 0.406]
+    std:  [0.229, 0.224, 0.225]
+  augmentation:
+    train:
+      - name: random_flip
+        prob: 0.5
+      - name: random_rotation
+        max_deg: 15
+        prob: 0.3
+      - name: color_jitter
+        brightness: 0.2
+        contrast: 0.2
+        saturation: 0.1
+        hue: 0.05
+        prob: 0.3
+
+metadata:
+  required_columns: ["filepath", "plant", "filename", "width", "height", "filesize", "md5", "phash"]
+  allow_missing: false
+
+logging:
+  save_duplicates_csv: true
+  verbose: false
